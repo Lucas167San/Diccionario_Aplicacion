@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +26,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText definitionEditText;
     private int editPosition = -1;
 
-    String nombre[] = {"Copiar", "Cortar", "Pegar"};
-    String definicion[] = {"Copia el texto o documento", "Corta el texto o documento", "Pega el texto o documento"};
+    String nombre[] = {"Flutter", "GUID (Identificador único Global)", "Katalon","NFC(Near - Field Communication)","UUID (Identificador Único Universal)"};
+    String definicion[] = { "SDK de código fuente abierto de desarrollo de aplicaciones móviles creado por Google.",
+                            "Número pseudoaleatorio empleado en aplicaciones de software.",
+                            "Herramienta de automatización de pruebas de código abierto de KMS Technology",
+                            "Tecnología de comunicación inalámbrica de corto alcance y alta frecuencia creada para el intercambio de datos dos dispositivos cercanos",
+                            "Formato estandarizado para identificar de manera única recursos en un sistema informático."};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +56,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String word = wordEditText.getText().toString();
                 String definition = definitionEditText.getText().toString();
-                if (editPosition == -1) {
-                    Entry entry = new Entry(word, definition);
-                    entries.add(entry);
+                if (wordEditText.getText().toString().isEmpty() || definitionEditText.getText().toString().isEmpty()) {
+                    Toast.makeText(v.getContext(), "Rellene los datos faltantes", Toast.LENGTH_SHORT).show();
+                    wordEditText.requestFocus();
                 } else {
-                    Entry entry = entries.get(editPosition);
-                    entry.setWord(word);
-                    entry.setDefinition(definition);
-                    editPosition = -1;
+                    if (editPosition == -1) {
+                        Entry entry = new Entry(word, definition);
+                        entries.add(entry);
+                    } else {
+                        Entry entry = entries.get(editPosition);
+                        entry.setWord(word);
+                        entry.setDefinition(definition);
+                        editPosition = -1;
+                    }
+                    adapter.notifyDataSetChanged();
+                    wordEditText.setText("");
+                    definitionEditText.setText("");
                 }
-                adapter.notifyDataSetChanged();
-                wordEditText.setText("");
-                definitionEditText.setText("");
             }
         });
 
@@ -70,11 +80,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Entry entry = entries.get(position);
-                wordEditText.setText(entry.getWord());
-                definitionEditText.setText(entry.getDefinition());
+                //wordEditText.setText(entry.getWord());
+                //definitionEditText.setText(entry.getDefinition());
                 editPosition = position;
+                wordEditText.requestFocus();
                AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext() );
-                dialog.setTitle("Diccionario").setMessage("Concepto: "+ entry.getWord()+"\n\nDefinición: "
+                dialog.setTitle("Diccionario").setMessage(entry.getWord()+"\n\nDefinición: "
                         +entry.getDefinition()).setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
