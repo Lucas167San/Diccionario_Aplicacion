@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -19,8 +20,11 @@ import java.util.ArrayList;
 
 import mx.itlalaguna.c19130906.diccionario_aplicacion.EntryAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     private ArrayList<Entry> entries;
+
+    private SearchView txtBuscar;
+
     private EntryAdapter adapter;
     private EditText wordEditText;
     private EditText definitionEditText;
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        txtBuscar = findViewById(R.id.searchView);
         entries = new ArrayList<>();
         for (int i = 0; i < nombre.length; i++){
             Entry entry = new Entry(nombre[i],definicion[i]);
@@ -129,5 +133,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        txtBuscar.setOnQueryTextListener(this);
+
+    }
+
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.filtrado(newText);
+        return false;
     }
 }

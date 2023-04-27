@@ -9,13 +9,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntryAdapter extends ArrayAdapter<Entry> {
     private ArrayList<Entry> entries;
+    private ArrayList<Entry> entriesOriginal;
 
     public EntryAdapter(Context context, ArrayList<Entry> entries) {
         super(context, 0, entries);
         this.entries = entries;
+        entriesOriginal = new ArrayList<>();
+        entriesOriginal.addAll(entries);
     }
 
     @Override
@@ -40,5 +45,32 @@ public class EntryAdapter extends ArrayAdapter<Entry> {
 
         // Retorna la vista actualizada
         return convertView;
+    }
+
+    public void filtrado(String txtBuscar){
+        int longitud = txtBuscar.length();
+        if(longitud == 0){
+            entries.clear();
+            entries.addAll(entriesOriginal);
+        } else {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                List<Entry> coleccion = entries.stream()
+                        .filter(i -> i.getWord().toLowerCase().contains(txtBuscar.toLowerCase()))
+                        .collect(Collectors.toList());
+                entries.clear();
+                entries.addAll(coleccion);
+            } else {
+                for (Entry e: entriesOriginal){
+                    if(e.getWord().toLowerCase().contains(txtBuscar.toLowerCase())){
+                        entries.add(e);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }
