@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 definitionEditText.setText(entry.getDefinition());
                 editPosition = position;
                AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext() );
-                dialog.setTitle("Diccionario").setMessage("Palabra: "+ entry.getWord()+"\n\nDefinicion: "
-                        +entry.getDefinition()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                dialog.setTitle("Diccionario").setMessage("Concepto: "+ entry.getWord()+"\n\nDefinición: "
+                        +entry.getDefinition()).setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
