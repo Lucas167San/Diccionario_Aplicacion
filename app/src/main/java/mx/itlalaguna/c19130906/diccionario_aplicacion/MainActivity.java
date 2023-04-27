@@ -84,12 +84,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Entry entry = entries.get(position);
-                //wordEditText.setText(entry.getWord());
-                //definitionEditText.setText(entry.getDefinition());
+                wordEditText.setText(entry.getWord());
+                definitionEditText.setText(entry.getDefinition());
                 editPosition = position;
                 wordEditText.requestFocus();
                AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext() );
-                dialog.setTitle("Diccionario").setMessage(entry.getWord()+"\n\nDefinición: "
+                dialog.setIcon(R.drawable.itl).setTitle("Diccionario").setMessage(entry.getWord()+"\n\nDefinición: "
                         +entry.getDefinition()).setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -150,4 +150,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         adapter.filtrado(newText);
         return false;
     }
+
+    public void btnAcercaDeClick( View v ){
+        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        builder.setTitle( "Acerca de..." ).setIcon( R.drawable.itl ).setMessage( "Diccionario_Aplicacion v1.0\n\n" +
+                "Por: AndroiDevs \n\n" +
+                "Ene-Jun 2023" ).setPositiveButton( "Aceptar", new DialogInterface.OnClickListener( ) {
+            @Override
+            public void onClick( DialogInterface dialog, int which ) {
+
+            }
+        } ).setCancelable( false ).create( ).show( );
+    }
+
 }
